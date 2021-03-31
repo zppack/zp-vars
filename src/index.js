@@ -19,7 +19,12 @@ const getConfig = (configFile) => {
   }
 
   const config = Toml.parse(content, 1.0, '\n', false);
-  config.vars = config.vars.map((elem) => {
+  log.d('Zp-vars: original config: \n', chalk.gray.bold(JSON.stringify(config)));
+  return config;
+};
+
+const formatConfig = (config) => {
+  config.zpvars = config.zpvars.map((elem) => {
     if (!elem) {
       return null;
     } else if (typeof elem === 'string') {
@@ -36,7 +41,7 @@ const getConfig = (configFile) => {
       return null;
     }
   }).filter(elem => !!elem);
-  log.d('Zp-vars: formatted config: \n', chalk.gray.bold(config));
+  log.d('Zp-vars: formatted config: \n', chalk.gray.bold(JSON.stringify(config)));
 
   return config;
 };
@@ -108,29 +113,30 @@ const middleware = async (ctx, next) => {
   log.d('Zp-vars: tplPath = ', chalk.underline(tplPath));
   log.d('Zp-vars: destPath = ', chalk.underline(destPath));
   log.d('Zp-vars: configFilePath = ', chalk.underline(configFile));
-  log.d('Zp-vars: options : \n', chalk.gray(options));
+  log.d('Zp-vars: options : \n', chalk.gray(JSON.stringify(options)));
 
   if (!fse.existsSync(configFile)) {
     log.w('Zp-vars: connot find config file `.zp-vars.toml`, `zp-vars` middleware ignored.');
     return;
   }
 
-  const config = getConfig(configFile);
+  const originalConfig = getConfig(configFile);
 
-  if (!config || !!config.vars || config.vars.length === 0) {
+  if (!originalConfig || !originalConfig.zpvars || originalConfig.zpvars.length === 0) {
     log.w('Zp-vars: invalid `.zp-vars.toml` config, `zp-vars` middleware ignored.');
     return;
   }
 
-  const configVars = config.vars;
+  const config = formatConfig(originalConfig);
+  const configVars = config.zpvars;
   const questions = getQuestions(configVars, options);
-  log.d('Zp-vars: questions: \n', chalk.gray(questions));
+  log.d('Zp-vars: questions: \n', chalk.gray(JSON.stringify(questions)));
 
   const answers = await inquirer.prompt(questions);
-  log.d('Zp-vars: answers: \n', chalk.gray(answers));
+  log.d('Zp-vars: answers: \n', chalk.gray(JSON.stringify(answers)));
 
   ctx.options = { ...options, ...answers };
-  log.d('Zp-vars: context options: \n', chalk.gray(ctx.options));
+  log.d('Zp-vars: context options: \n', chalk.gray(JSON.stringify(ctx.options)));
 
   await next();
 
