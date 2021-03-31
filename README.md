@@ -6,6 +6,34 @@ Also provide a cli tool for test or development.
 
 ## Start
 
+### Config
+
+- middleware name: **@zppack/zp-vars**
+- config file: **`.zp/.zp-vars.toml`**, TOML v1.0.
+- config format: a list named `zpvars`, to configure inquirer questions `name` or more fields. If only `name` field, can be shorted as a string.
+
+### Config Examples
+
+```toml
+# TOML v1.0
+# Variables will ask to input
+
+zpvars = [
+  'name', # same as { name = 'name' }, or { name = 'name', message = 'Input name: ' },
+  'description',
+  'author',
+  { name = 'remote', message = 'Git remote url: ' },
+  'homepage',
+  { name = 'license', default = 'MIT' },
+]
+```
+
+### CLI
+
+```sh
+npx @zppack/zp-vars [path]
+```
+
 ## Contributing
 
 [How to contribute to this?](CONTRIBUTING.md)
