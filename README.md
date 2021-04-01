@@ -28,6 +28,21 @@ zpvars = [
 ]
 ```
 
+```toml
+# TOML v1.0
+
+[[zpvars]]
+name = 'name'
+
+[[zpvars]]
+name = 'remote'
+message = 'Git remote url: '
+
+[[zpvars]]
+name = 'license'
+default = 'MIT'
+```
+
 ### CLI
 
 ```sh
