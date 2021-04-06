@@ -99,19 +99,17 @@ const doReplacement = ({ tplPath, configPath, options }) => {
  * @param {*} ctx
  *  tplBasePath: "template-project-std"
  *  tplPath: "template-project-std/template-project"
- *  destPath: ".zp-app"
  *  configPath: ".zp"
  *  options: {}
  * @param {*} next
  */
 const middleware = async (ctx, next) => {
   log.i('Zp-vars: start `zp-vars` middleware');
-  const { tplPath, destPath, configPath, options } = ctx;
+  const { tplPath, configPath, options } = ctx;
   const configFilePath = path.join(tplPath, configPath);
   const configFile = path.join(configFilePath, CONFIG_NAME);
 
   log.d('Zp-vars: tplPath = ', chalk.underline(tplPath));
-  log.d('Zp-vars: destPath = ', chalk.underline(destPath));
   log.d('Zp-vars: configFilePath = ', chalk.underline(configFile));
   log.d('Zp-vars: options : \n', chalk.gray(JSON.stringify(options)));
 
