@@ -105,6 +105,7 @@ const doReplacement = ({ tplPath, configDir, options }) => {
  */
 const middleware = async (ctx, next) => {
   log.i('Zp-vars: start `zp-vars` middleware');
+  log.d('Zp-vars: recieving context: \n', JSON.stringify(ctx));
   const { tplPath, configDir, options } = ctx;
   const configFilePath = path.join(tplPath, configDir);
   const configFile = path.join(configFilePath, CONFIG_NAME);
