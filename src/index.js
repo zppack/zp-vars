@@ -72,10 +72,10 @@ const getQuestions = (configVars, options = {}) => {
     });
 };
 
-const doReplacement = ({ tplPath, configPath, options }) => {
+const doReplacement = ({ tplPath, configDir, options }) => {
   log.i('Zp-vars: start to replace template variables...');
 
-  const files = zpGlob.union(['**/*', `!${configPath}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
+  const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
   log.d('Zp-vars: files to do replacement: \n', chalk.gray(files));
 
   const templateRegEx = /\{\{\s*(.*?)\s*\}\}/g;
@@ -99,14 +99,14 @@ const doReplacement = ({ tplPath, configPath, options }) => {
  * @param {*} ctx
  *  tplBasePath: "template-project-std"
  *  tplPath: "template-project-std/template-project"
- *  configPath: ".zp"
+ *  configDir: ".zp"
  *  options: {}
  * @param {*} next
  */
 const middleware = async (ctx, next) => {
   log.i('Zp-vars: start `zp-vars` middleware');
-  const { tplPath, configPath, options } = ctx;
-  const configFilePath = path.join(tplPath, configPath);
+  const { tplPath, configDir, options } = ctx;
+  const configFilePath = path.join(tplPath, configDir);
   const configFile = path.join(configFilePath, CONFIG_NAME);
 
   log.d('Zp-vars: tplPath = ', chalk.underline(tplPath));
