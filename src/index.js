@@ -98,7 +98,9 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
     const targetDirName = dir.replace(templateRegEx, (_, varKey) => options[varKey] || '');
     if ((path.basename(targetDirName) !== path.basename(dir)) && (path.dirname(targetDirName) === path.dirname(dir))) {
       processed.push(targetDirName);
-      fse.moveSync(dir, targetDirName);
+      if (!fse.pathExistsSync(targetDirName)) {
+        fse.moveSync(dir, targetDirName);
+      }
     }
   });
 
