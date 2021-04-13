@@ -26,10 +26,14 @@ zpvars = [
   'homepage',
   { name = 'license', default = 'MIT' },
 ]
+
+# replaceName = false # do not replace file or directory name by default
 ```
 
 ```toml
 # TOML v1.0
+
+replaceName = true
 
 [[zpvars]]
 name = 'name'
