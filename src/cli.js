@@ -30,7 +30,7 @@ function start(tplPath) {
 
   log.i('Command zp-vars: process start, template path = ', chalk.underline(tplPath));
 
-  middleware({ tplPath, configPath: '.zp', options: { date: dateStr } }, async () => {
+  middleware({ tplPath, configDir: '.zp', options: { date: dateStr } }, async () => {
     log.i('Command zp-vars: process next called.');
   }).then(() => {
     log.i('Command zp-vars: process completed.');
