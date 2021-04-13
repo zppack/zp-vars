@@ -86,8 +86,8 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
     const targetFileName = file.replace(templateRegEx, (_, varKey) => options[varKey] || '');
     if (targetFileName !== file) {
       processed.push(targetFileName);
+      fse.moveSync(file, targetFileName);
     }
-    fse.moveSync(file, targetFileName);
   });
 
   log.d(`Zp-vars: ${processed.length} files and directories' name were processed: \n`, chalk.gray(processed));
@@ -109,8 +109,8 @@ const doReplacement = ({ tplPath, configDir, options }) => {
     const targetContent = sourceContent.replace(templateRegEx, (_, varKey) => options[varKey] || '');
     if (targetContent !== sourceContent) {
       processedFiles.push(file);
+      fse.writeFileSync(file, targetContent);
     }
-    fse.writeFileSync(file, targetContent);
   });
 
   log.d(`Zp-vars: ${processedFiles.length} files were processed: \n`, chalk.gray(processedFiles));
