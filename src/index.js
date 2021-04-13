@@ -75,18 +75,30 @@ const getQuestions = (configVars, options = {}) => {
 const doReplacementName = ({ tplPath, configDir, options }) => {
   log.i('Zp-vars: start to replace file name variables...');
 
-  const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
-  log.d('Zp-vars: files to do name replacement: \n', chalk.gray(files));
-
   const templateRegEx = /\{\{\s*(.*?)\s*\}\}/g;
-
   const processed = [];
+
+  // replace files names
+  const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
+  log.d('Zp-vars: files to do name replacement: \n', chalk.gray(files));
 
   files.forEach((file) => {
     const targetFileName = file.replace(templateRegEx, (_, varKey) => options[varKey] || '');
     if (targetFileName !== file) {
       processed.push(targetFileName);
       fse.moveSync(file, targetFileName);
+    }
+  });
+
+  // replace directories names
+  const dirs = zpGlob.union(['**/', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
+  log.d('Zp-vars: directories to do name replacement: \n', chalk.gray(dirs));
+
+  dirs.forEach((dir) => {
+    const targetDirName = dir.replace(templateRegEx, (_, varKey) => options[varKey] || '');
+    if (targetDirName !== dir) {
+      processed.push(targetDirName);
+      fse.moveSync(dir, targetDirName);
     }
   });
 
