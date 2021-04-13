@@ -83,10 +83,13 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
   log.d('Zp-vars: files to do name replacement: \n', chalk.gray(files));
 
   files.forEach((file) => {
-    const targetFileName = file.replace(templateRegEx, (_, varKey) => options[varKey] || '');
-    if (targetFileName !== file) {
-      processed.push(targetFileName);
-      fse.moveSync(file, targetFileName);
+    const dir = path.dirname(file);
+    const filename = path.basename(file);
+    const targetFileName = filename.replace(templateRegEx, (_, varKey) => options[varKey] || '');
+    if (targetFileName !== filename) {
+      const targetFilePath = path.join(dir, targetFileName);
+      processed.push(targetFilePath);
+      fse.moveSync(file, targetFilePath);
     }
   });
 
@@ -100,6 +103,8 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
       processed.push(targetDirName);
       if (!fse.pathExistsSync(targetDirName)) {
         fse.moveSync(dir, targetDirName);
+      } else {
+        fse.removeSync(dir);
       }
     }
   });
