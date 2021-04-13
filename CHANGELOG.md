@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/zppack/zp-vars/compare/v0.1.7...v0.1.8) (2021-04-13)
+
+
+### Features
+
+* variable replacement support file and directory name ([f091649](https://github.com/zppack/zp-vars/commit/f091649bc5533d3380da08b44efb0675368589b6))
+
 ### [0.1.7](https://github.com/zppack/zp-vars/compare/v0.1.6...v0.1.7) (2021-04-13)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@zppack/zp-vars",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A middleware for zp to support interactive Q&A and do replacement to template files",
   "keywords": [
     "zp",
