@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://github.com/zppack/zp-vars/compare/v0.1.12...v0.1.13) (2021-04-13)
+
+
+### Refactors
+
+* improve replacing file and directory name ([05f2ac9](https://github.com/zppack/zp-vars/commit/05f2ac982b2933836e8ae9e6624b76bbbe0d781e))
+
 ### [0.1.12](https://github.com/zppack/zp-vars/compare/v0.1.11...v0.1.12) (2021-04-13)
 
 
