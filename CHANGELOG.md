@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/zppack/zp-vars/compare/v0.1.9...v0.1.10) (2021-04-13)
+
+
+### Bug Fixes
+
+* change directories names replacement strategy ([48ff439](https://github.com/zppack/zp-vars/commit/48ff439fac4f1690ed7986901ec22a5f93ac09b8))
+
 ### [0.1.9](https://github.com/zppack/zp-vars/compare/v0.1.8...v0.1.9) (2021-04-13)
 
 
