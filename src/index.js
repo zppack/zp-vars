@@ -78,33 +78,22 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
   const templateRegEx = /\{\{\s*(.*?)\s*\}\}/g;
   const processed = [];
 
-  // replace files names
-  const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
-  log.d('Zp-vars: files to do name replacement: \n', chalk.gray(files));
+  // replace files and directories names
+  const filepaths = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
+  log.d('Zp-vars: files and directories to do name replacement: \n', chalk.gray(filepaths));
 
-  files.forEach((file) => {
-    const dir = path.dirname(file);
-    const filename = path.basename(file);
-    const targetFileName = filename.replace(templateRegEx, (_, varKey) => options[varKey] || '');
-    if (targetFileName !== filename) {
-      const targetFilePath = path.join(dir, targetFileName);
-      processed.push(targetFilePath);
-      fse.moveSync(file, targetFilePath);
-    }
-  });
-
-  // replace directories names
-  const dirs = zpGlob.union(['**/', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
-  log.d('Zp-vars: directories to do name replacement: \n', chalk.gray(dirs));
-
-  dirs.forEach((dir) => {
-    const targetDirName = dir.replace(templateRegEx, (_, varKey) => options[varKey] || '');
-    if ((path.basename(targetDirName) !== path.basename(dir)) && (path.dirname(targetDirName) === path.dirname(dir))) {
-      processed.push(targetDirName);
-      if (!fse.pathExistsSync(targetDirName)) {
-        fse.moveSync(dir, targetDirName);
+  filepaths.forEach((filepath) => {
+    const name = path.basename(filepath);
+    const targetFilePath = filepath.replace(templateRegEx, (_, varKey) => options[varKey] || '');
+    const targetName = path.basename(targetFilePath);
+    if (targetFilePath !== filepath) {
+      if (targetName !== name) {
+        processed.push(targetFilePath);
+      }
+      if (!fse.pathExistsSync(targetFilePath)) {
+        fse.moveSync(filepath, targetFilePath);
       } else {
-        fse.removeSync(dir);
+        fse.removeSync(filepath);
       }
     }
   });
