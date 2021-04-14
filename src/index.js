@@ -92,10 +92,10 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
       fse.removeSync(filepath);
     }
     filepaths = zpGlob.union(['**/*{{*}}*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
-    log.d(`Zp-vars: ${filepaths.length} files and directories to be processd`);
+    log.d(`Zp-vars: ${filepaths.length} files and directories' name to be processd`);
   }
 
-  log.d(`Zp-vars: ${processed.length} files and directories' name were processed: \n`, chalk.gray(processed));
+  log.d(`Zp-vars: ${processed.length} files and directories' name were processed: \n`, chalk.gray(processed.join('\n')));
   log.i(`Zp-vars: ${processed.length} files and directories' name were processed`);
 };
 
@@ -103,7 +103,7 @@ const doReplacement = ({ tplPath, configDir, options }) => {
   log.i('Zp-vars: start to replace template variables...');
 
   const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
-  log.d('Zp-vars: files to do replacement: \n', chalk.gray(files));
+  log.d(`Zp-vars: ${files.length} files' content to do replacement: \n`, chalk.gray(files.join('\n')));
 
   const templateRegEx = /\{\{\s*(.*?)\s*\}\}/g;
 
@@ -118,8 +118,8 @@ const doReplacement = ({ tplPath, configDir, options }) => {
     }
   });
 
-  log.d(`Zp-vars: ${processedFiles.length} files were processed: \n`, chalk.gray(processedFiles));
-  log.i(`Zp-vars: ${processedFiles.length} files were processed`);
+  log.d(`Zp-vars: ${processedFiles.length} files' content were processed: \n`, chalk.gray(processedFiles.join('\n')));
+  log.i(`Zp-vars: ${processedFiles.length} files' content were processed`);
 };
 
 /**
