@@ -79,28 +79,20 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
   const processed = [];
 
   // replace files and directories names
-  const filepaths = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
-  log.d('Zp-vars: files and directories to do name replacement: \n', chalk.gray(filepaths));
+  let filepaths = zpGlob.union(['**/*{{*}}*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
+  log.d(`Zp-vars: ${filepaths.length} files and directories to do name replacement: \n`, chalk.gray(filepaths.join('\n')));
 
-  try {
-    filepaths.forEach((filepath) => {
-      const name = path.basename(filepath);
-      const targetFilePath = filepath.replace(templateRegEx, (_, varKey) => options[varKey] || '');
-      const targetName = path.basename(targetFilePath);
-      if (targetFilePath !== filepath) {
-        if (targetName !== name) {
-          processed.push(targetFilePath);
-        }
-        if (!fse.pathExistsSync(targetFilePath)) {
-          fse.moveSync(filepath, targetFilePath);
-        } else if (fse.pathExistsSync(filepath)) {
-          fse.removeSync(filepath);
-        }
-      }
-    });
-  } catch (ex) {
-    process.exitCode = 3000;
-    throw Error(`Zp-vars: unexpected errors occured when replacing variables in file or directory's name. ` + ex);
+  while (filepaths.length > 0) {
+    const filepath = filepaths[0];
+    const targetFilePath = filepath.replace(templateRegEx, (_, varKey) => options[varKey] || '');
+    processed.push(targetFilePath);
+    if (!fse.pathExistsSync(targetFilePath)) {
+      fse.moveSync(filepath, targetFilePath);
+    } else if (fse.pathExistsSync(filepath)) {
+      fse.removeSync(filepath);
+    }
+    filepaths = zpGlob.union(['**/*{{*}}*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), realpath: true });
+    log.d(`Zp-vars: ${filepaths.length} files and directories to be processd`);
   }
 
   log.d(`Zp-vars: ${processed.length} files and directories' name were processed: \n`, chalk.gray(processed));
