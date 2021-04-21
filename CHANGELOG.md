@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.19](https://github.com/zppack/zp-vars/compare/v0.1.18...v0.1.19) (2021-04-21)
+
+
+### Bug Fixes
+
+* fix typo of `suffix` ([d2b4931](https://github.com/zppack/zp-vars/commit/d2b4931e722d87cf65a7ed5cc41795d3659379da))
+
 ### [0.1.18](https://github.com/zppack/zp-vars/compare/v0.1.17...v0.1.18) (2021-04-21)
 
 
