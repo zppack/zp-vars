@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.18](https://github.com/zppack/zp-vars/compare/v0.1.17...v0.1.18) (2021-04-21)
+
+
+### Features
+
+* support customizing interpolation identifiers for replacing & change default interpolation from `{{` and  `}}` to `{{{` and `}}}` ([c704beb](https://github.com/zppack/zp-vars/commit/c704beb1cc2e928706abd8a667461448d060839e))
+
 ### [0.1.17](https://github.com/zppack/zp-vars/compare/v0.1.16...v0.1.17) (2021-04-14)
 
 ### [0.1.16](https://github.com/zppack/zp-vars/compare/v0.1.15...v0.1.16) (2021-04-14)
