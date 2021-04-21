@@ -10,7 +10,11 @@ Also provide a cli tool for test or development.
 
 - middleware name: **@zppack/zp-vars**
 - config file: **`.zp/.zp-vars.toml`**, TOML v1.0.
-- config format: a list named `zpvars`, to configure inquirer questions `name` or more fields. If only `name` field, can be shorted as a string.
+- config options:
+
+  - **zpvars**: a list, to configure inquirer questions `name` or more fields. If only `name` field, can be shorted as a string.
+  - **replaceName**: boolean, to decide whether to replace file and directory's name or not.
+  - **interpolation**: an object, including `prefix` and `suffix` fields, which are to configure the prefix and suffix of interpolation identifier for replacing. Default prefix and suffix are `{{{` and `}}}`.
 
 ### Config Examples
 
@@ -28,12 +32,17 @@ zpvars = [
 ]
 
 # replaceName = false # do not replace file or directory name by default
+# interpolation = { prefix = '{{{', suffix = '}}}' } # change default interpolation identifiers
 ```
 
 ```toml
 # TOML v1.0
 
 replaceName = true
+
+[[interpolation]]
+prefix = '<{%'
+suffix = '%}>'
 
 [[zpvars]]
 name = 'name'

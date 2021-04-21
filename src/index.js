@@ -8,6 +8,10 @@ import zpGlob from '@zppack/glob';
 import { filterTrim, validateRequired } from './inquirer-util';
 
 const CONFIG_NAME = '.zp-vars.toml';
+const DEFAULT_INTERPOLATION_IDENTIFIER = {
+  prefix: '{{{',
+  suffix: '}}}',
+};
 
 const getConfig = (configFile) => {
   log.d('Zp-vars: exist `.zp-vars.toml` file.');
@@ -72,10 +76,12 @@ const getQuestions = (configVars, options = {}) => {
     });
 };
 
-const doReplacementName = ({ tplPath, configDir, options }) => {
+const doReplacementName = ({ tplPath, configDir, options, interpolation }) => {
   log.i('Zp-vars: start to replace file name variables...');
 
-  const templateRegEx = /\{\{\s*(.*?)\s*\}\}/g;
+  const { prefix, suffux } = { ...DEFAULT_INTERPOLATION_IDENTIFIER, ...interpolation };
+  const templateRegEx = new RegExp(`${prefix}\\s*(.*?)\\s*${suffix}`, 'g');
+
   const processed = [];
 
   // replace files and directories names
@@ -99,13 +105,14 @@ const doReplacementName = ({ tplPath, configDir, options }) => {
   log.i(`Zp-vars: ${processed.length} files and directories' name were processed`);
 };
 
-const doReplacement = ({ tplPath, configDir, options }) => {
+const doReplacement = ({ tplPath, configDir, options, interpolation }) => {
   log.i('Zp-vars: start to replace template variables...');
 
   const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
   log.d(`Zp-vars: ${files.length} files' content to do replacement: \n`, chalk.gray(files.join('\n')));
 
-  const templateRegEx = /\{\{\s*(.*?)\s*\}\}/g;
+  const { prefix, suffux } = { ...DEFAULT_INTERPOLATION_IDENTIFIER, ...interpolation };
+  const templateRegEx = new RegExp(`${prefix}\\s*(.*?)\\s*${suffix}`, 'g');
 
   const processedFiles = [];
 
@@ -165,6 +172,9 @@ const middleware = async (ctx, next) => {
   log.d('Zp-vars: context options: \n', chalk.gray(JSON.stringify(ctx.options)));
 
   await next();
+
+  ctx.replaceName = config.replaceName;
+  ctx.interpolation = config.interpolation || {};
 
   if (config.replaceName) {
     // replace file and directory names
