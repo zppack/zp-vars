@@ -79,7 +79,7 @@ const getQuestions = (configVars, options = {}) => {
 const doReplacementName = ({ tplPath, configDir, options, interpolation }) => {
   log.i('Zp-vars: start to replace file name variables...');
 
-  const { prefix, suffux } = { ...DEFAULT_INTERPOLATION_IDENTIFIER, ...interpolation };
+  const { prefix, suffix } = { ...DEFAULT_INTERPOLATION_IDENTIFIER, ...interpolation };
   const templateRegEx = new RegExp(`${prefix}\\s*(.*?)\\s*${suffix}`, 'g');
 
   const processed = [];
@@ -111,7 +111,7 @@ const doReplacement = ({ tplPath, configDir, options, interpolation }) => {
   const files = zpGlob.union(['**/*', `!${configDir}/**`, `!${CONFIG_NAME}`, '!.git/**', '!node_modules/**'], { dot: true, cwd: path.resolve(tplPath), nodir: true, realpath: true });
   log.d(`Zp-vars: ${files.length} files' content to do replacement: \n`, chalk.gray(files.join('\n')));
 
-  const { prefix, suffux } = { ...DEFAULT_INTERPOLATION_IDENTIFIER, ...interpolation };
+  const { prefix, suffix } = { ...DEFAULT_INTERPOLATION_IDENTIFIER, ...interpolation };
   const templateRegEx = new RegExp(`${prefix}\\s*(.*?)\\s*${suffix}`, 'g');
 
   const processedFiles = [];
